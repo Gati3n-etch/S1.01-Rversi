@@ -34,7 +34,19 @@ class Reversi{
 	}
 	
 	
-	void tableauNum(char[][] tab){
+	void estJouable(int x, int y, char[][] tab){
+		boolean jouable = true;
+		if(tab[y][x] == ' '){
+			int[][] voisins = listeVoisin(x, y, tab);
+			for(int i = 0; i<voisins.length; i++){
+				if(voisins[i][0] == -1){
+					jouable = false;
+				}
+			}
+		}else{
+			jouable = false;
+		}
+		return jouable;
 	}
 	
 	
