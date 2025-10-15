@@ -34,7 +34,28 @@ class Reversi{
 	}
 	
 	
-	void estJouable(int x, int y, char[][] tab){
+	void coupJouer(char[][] tab, int joueur){
+		char signe;
+		if(joueur == 1){
+			signe = 'O';
+		}else{
+			signe = 'X';
+		}
+		int x = SimpleInput.getInt("Choisissez la colone : ");
+		int y = SimpleInput.getInt("Choisissez la ligne : ");
+		while(estJouable(x,y,tab) == false){
+			System.out.println("Ce coup ne peut pas etre jouer choisissez une autre case.");
+			x = SimpleInput.getInt("Choisissez la colone : ");
+			y = SimpleInput.getInt("Choisissez la ligne : ");
+		}
+		tab[y][x] = signe;
+		/**
+		 * Appel fonction pour remplacer les cases
+		*/
+	}
+		
+	
+	boolean estJouable(int x, int y, char[][] tab){
 		boolean jouable = true;
 		if(tab[y][x] == ' '){
 			int[][] voisins = listeVoisin(x, y, tab);
