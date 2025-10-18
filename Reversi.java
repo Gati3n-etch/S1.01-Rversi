@@ -172,9 +172,136 @@ class Reversi{
 	void changementCase(int x, int y, char[][] tab, char val){
 		tab[y][x] = val;
 	}
+	void verifDiagonaleD(char[][]t,int x, int y,int joueur){
+		int i=1;
+		int j=1;
+		char signe='X';
+		if ( joueur==1){
+			signe='O';
+		}
+		while(t[x-i][y-i]!=' ' && t[x-i][y-i]!=signe){	
+			i++;
+		}
+		if (i>2){
+			while(t[x-j][y-j]!=' '&& t[x-j][y-j]!=signe){
+				changementCase(x-j,y-j,t,signe);
+				j++;
+			}
+		}else if(i<=2){
+			i=1;
+			j=1;
+			while(t[x+i][y+i]!=' '&& t[x+i][y+i]!=signe){	
+				i++;
+			}
+			if (i>2){
+				while(t[x+j][y+j]!=' '&& t[x+j][y+j]!=signe){
+					changementCase(x+j,y+j,t,signe);
+					j++;
+				}
+			}
+		}
+	}
+	void verifDiagonaleG(char[][]t,int x, int y,int joueur){
+		int i=1;
+		int j=1;
+		char signe='X';
+		if ( joueur==1){
+			signe='O';
+		}
+		while(t[y-i][x-i]!=' ' && t[y-i][x-i]!=signe && i<t.length){	
+			i++;
+		}
+		if (i>2){
+			while(t[y-j][x-j]!=' '&& t[y-j][x-j]!=signe && i<t.length){
+				changementCase(y-j,x-j,t,signe);
+				j++;
+			}
+		}else if(i<=2){
+			i=1;
+			j=1;
+			while(t[y+i][x+i]!=' '&& t[y+i][x+i]!=signe && j<t.length){	
+				i++;
+			}
+			if (i>2){
+				while(t[y+j][x+j]!=' '&& t[y+j][x+j]!=signe && j<t.length){
+					changementCase(y+j,x+j,t,signe);
+					j++;
+				}
+			}
+		}
+	}
 	
-	
-	
+	void verifLigne(char[][]t,int x, int y,int joueur){
+		int i=1;
+		int j=1;
+		char signe='X';
+		if ( joueur==1){
+			signe='O';
+		}
+		while(t[x][y-i]!=' ' && t[x][y-i]!=signe){	
+			i++;
+		}
+		if (i>2){
+			while(t[x][y-j]!=' '&& t[x][y-j]!=signe){
+				changementCase(x,y-j,t,signe);
+				j++;
+			}
+		}else if(i<=2){
+			i=1;
+			j=1;
+			while(t[x][y+i]!=' '&& t[x][y+i]!=signe){	
+				i++;
+			}
+			if (i>2){
+				while(t[x][y+j]!=' '&& t[x][y+j]!=signe){
+					changementCase(x,y+j,t,signe);
+					j++;
+				}
+			}
+		}
+	}
+	void verifColonne(char[][]t,int x, int y,int joueur){
+		int i=1;
+		int j=1;
+		char signe='X';
+		if ( joueur==1){
+			signe='O';
+		}
+		while(t[x-i][y]!=' ' && t[x-i][y]!=signe){	
+			i++;
+		}
+		if (i>2){
+			while(t[x-j][y]!=' '&& t[x-j][y]!=signe){
+				changementCase(x-j,y,t,signe);
+				j++;
+			}
+		}else if(i<=2){
+			i=1;
+			j=1;
+			while(t[x+i][y]!=' '&& t[x+i][y]!=signe){	
+				i++;
+			}
+			if (i>2){
+				while(t[x+j][y]!=' '&& t[x+j][y]!=signe){
+					changementCase(x+j,y,t,signe);
+					j++;
+				}
+			}
+		}
+	}
+	void regles(char[][]t,int x, int y,int joueur){
+		if (verifColonne(t,x,y,joueur)!=displayTab(t)){
+			verifColonne(t,x,y,joueur);
+		}
+		else if (verifLigne(t,x,y,joueur)!=displayTab(t)){
+			verifLigne(t,x,y,joueur);
+		}
+		else if (verifDiagonaleD(t,x,y,joueur)!=displayTab(t)){
+			verifDiagonaleD(t,x,y,joueur);
+		}
+		else if (verifDiagonaleG(t,x,y,joueur)!=displayTab(t)){
+			verifDiagonaleG(t,x,y,joueur);
+		}
 	void displayTab(char[][] t){
 		String ligne_haut = "    ";
 		for(int i = 0; i < t.length ; i++){
@@ -215,3 +342,4 @@ class Reversi{
 		
 	}			
 }
+
