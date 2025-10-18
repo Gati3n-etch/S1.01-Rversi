@@ -21,6 +21,32 @@ class Reversi{
 		
 		}
 	}
+	
+	
+	int resultat(char[][]tab){
+		char signe1 = 'O';
+		char signe2 = 'X';
+		int compteurO = 0;
+		int compteurX = 0;
+		int gagnant;
+		for(int y = 0; y < tab.length; y++){
+			for(int x = 0; x < tab.length; x++){
+				if(tab[y][x] == signe1){
+					compteurO++;
+				}else if(tab[y][x] == signe2){
+					compteurX++;
+				}
+			}
+		}
+		if(compteurO > compteurX){
+			gagnant = 1;
+		}else if(compteurO < compteurX){
+			gagnant = 2;
+		}else{
+			gagnant = 0;
+		}
+		return gagnant;
+	}
 
 
 	int choixMode(){
@@ -172,6 +198,8 @@ class Reversi{
 	void changementCase(int x, int y, char[][] tab, char val){
 		tab[y][x] = val;
 	}
+	
+	
 	void verifDiagonaleD(char[][]t,int x, int y,int joueur){
 		int i=1;
 		int j=1;
@@ -201,6 +229,8 @@ class Reversi{
 			}
 		}
 	}
+	
+	
 	void verifDiagonaleG(char[][]t,int x, int y,int joueur){
 		int i=1;
 		int j=1;
@@ -231,6 +261,7 @@ class Reversi{
 		}
 	}
 	
+
 	void verifLigne(char[][]t,int x, int y,int joueur){
 		int i=1;
 		int j=1;
@@ -260,6 +291,8 @@ class Reversi{
 			}
 		}
 	}
+	
+	
 	void verifColonne(char[][]t,int x, int y,int joueur){
 		int i=1;
 		int j=1;
@@ -289,6 +322,8 @@ class Reversi{
 			}
 		}
 	}
+	
+	/*
 	void regles(char[][]t,int x, int y,int joueur){
 		if (verifColonne(t,x,y,joueur)!=displayTab(t)){
 			verifColonne(t,x,y,joueur);
@@ -302,6 +337,20 @@ class Reversi{
 		else if (verifDiagonaleG(t,x,y,joueur)!=displayTab(t)){
 			verifDiagonaleG(t,x,y,joueur);
 		}
+	}
+	*/ 
+	
+	
+	int score(char[][] tab, char signe){
+		int compteur = 0;
+		for(int y = 0; y < tab.length; y++){
+			for(int x = 0; x < tab.length; x++){
+				if(tab[y][x] == signe){
+					compteur++;
+				}
+			}
+		}
+		return compteur;
 	}
 	
 	void displayTab(char[][] t){
@@ -340,9 +389,8 @@ class Reversi{
 			System.out.print("----");
 		}
 		System.out.println();
+		System.out.println("Nombre de pionts sur le plateau : O = "+ score(t,'O') +" / X = "+ score(t,'X'));
 		System.out.println("O : piont blanc / X : piont noir / ~ : case valide");
 		
 	}			
 }
-
-
