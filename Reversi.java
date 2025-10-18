@@ -302,6 +302,8 @@ class Reversi{
 		else if (verifDiagonaleG(t,x,y,joueur)!=displayTab(t)){
 			verifDiagonaleG(t,x,y,joueur);
 		}
+	}
+	
 	void displayTab(char[][] t){
 		String ligne_haut = "    ";
 		for(int i = 0; i < t.length ; i++){
@@ -342,4 +344,5 @@ class Reversi{
 		
 	}			
 }
+
 
