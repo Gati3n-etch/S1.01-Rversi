@@ -24,20 +24,9 @@ class Reversi{
 	
 	
 	int resultat(char[][]tab){
-		char signe1 = 'O';
-		char signe2 = 'X';
-		int compteurO = 0;
-		int compteurX = 0;
+		int compteurO = score(tab,'O');
+		int compteurX = score(tab,'X');
 		int gagnant;
-		for(int y = 0; y < tab.length; y++){
-			for(int x = 0; x < tab.length; x++){
-				if(tab[y][x] == signe1){
-					compteurO++;
-				}else if(tab[y][x] == signe2){
-					compteurX++;
-				}
-			}
-		}
 		if(compteurO > compteurX){
 			gagnant = 1;
 		}else if(compteurO < compteurX){
