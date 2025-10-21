@@ -12,17 +12,86 @@ class Reversi{
 		int[] couleurPiontJoueur = choixJoueur(mode);
 		int joueur1 = couleurPiontJoueur[0];
 		int joueur2 = couleurPiontJoueur[1];
+		int tour = 0;
+		boolean fini = false;
 		/* Mode a 2 */
 		if(mode==2){
-			
+			while(fini == false){
+				if(tour%2 == joueur1){
+					coupJouer(plateauJeu,joueur1);
+				}else{
+					coupJouer(plateauJeu,joueur2);
+				}
+				fini = estTerminer(plateauJeu);
+			}
+			int gagnant = resultat(plateauJeu);
+			if(gagnant == joueur1){
+				System.out.println("Le joueur 1 à gagné !");
+			}else if(gagnant == joueur2){
+				System.out.println("Le joueur 2 à gagné !");
+			}else{
+				System.out.println("Egalité !");
+			}
 		}
 		/* Mode solo */
 		else{
-		
+			while(fini == false){
+				if(tour%2 == joueur1){
+					coupJouer(plateauJeu,joueur1);
+				}else{
+					coupJouer(plateauJeu,joueur2);
+				}
+				fini = estTerminer(plateauJeu);
+			}
+			int gagnant = resultat(plateauJeu);
+			if(gagnant == joueur1){
+				System.out.println("Le joueur 1 à gagné !");
+			}else if(gagnant == joueur2){
+				System.out.println("Le robot à gagné !");
+			}else{
+				System.out.println("Egalité !");
+			}
 		}
 	}
 	
 	
+	boolean estTerminer(char[][] tab){
+		boolean terminer = false;
+		if(estPresent(tab,'O') == false){
+			terminer = true;
+		}else if(estPresent(tab,'X') == false){
+			terminer = true;
+		}else{
+			boolean plateauPlein = true;
+			for(int i = 0; i < tab.length; i++){
+				for(int j = 0; j < tab.length; j++){
+					if(estJouable(j,i,tab)){
+						plateauPlein = false;
+					}
+				}
+			}
+			if(plateauPlein == true){
+				terminer = true;
+			}
+		}
+		return terminer;
+	}
+	
+	
+	
+	boolean estPresent(char[][] tab, char signe){
+		boolean present = false;
+		for(int i = 0; i < tab.length; i++){
+			for(int j = 0; j < tab.length; j++){
+				if(tab[i][j] == signe){
+					present = true;
+				}
+			}
+		}
+		return present;
+	}
+				
+				
 	int resultat(char[][]tab){
 		int compteurO = score(tab,'O');
 		int compteurX = score(tab,'X');
