@@ -1,10 +1,16 @@
+/**
+* S1.01
+* @author Lucas GUEBHART - Gatien REBECHE
+**/
 class Reversi{
 	void principal(){
 		testScore();
 		lancementJeu();
 	}
 	
-	
+	/**
+	* Lance le jeu et appel des sous méthodes
+	*/
 	void lancementJeu(){
 		titre();
 		int mode = choixMode();
@@ -59,7 +65,9 @@ class Reversi{
 		}
 	}
 	
-	
+	/**
+	* Affiche le titre
+	*/
 	void titre(){
 		System.out.println();
 		System.out.println();
@@ -76,7 +84,12 @@ class Reversi{
         System.out.println();
     }
 	
-	
+	/**
+	* Vérifie si la partie est terminée 
+	* Et renvoie true si la partie est terminée ( plateau plein ou plus de pions d'une couleur ) sinon false
+	* @param tab tableau de char à double entré représentant le plateau de jeu
+	* @return retourne si la partie est terminée
+	*/
 	boolean estTerminer(char[][] tab){
 		boolean terminer = false;
 		if(estPresent(tab,'O') == false){
@@ -896,6 +909,7 @@ class Reversi{
 		
 	}			
 }
+
 
 
 
