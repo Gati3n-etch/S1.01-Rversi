@@ -6,6 +6,7 @@ class Reversi{
 	
 	
 	void lancementJeu(){
+		titre();
 		int mode = choixMode();
 		char[][] plateauJeu = tableau();
 		displayTab(plateauJeu);
@@ -56,7 +57,18 @@ class Reversi{
 			}
 		}
 	}
-	
+
+	void titre(){
+		System.out.println("//***\\\\_//***\\\\_//***\\\\_//***\\\\_//***\\\\_//***\\\\_//***\\\\__//***\\\\_//***\\\\_//\\\\");
+        System.out.println("// ######    #######  #           #  #######  ######    #####   #######  //\\\\");
+        System.out.println("// #     #   #         #         #   #        #     #  #     #     #     //\\\\");
+        System.out.println("// #     #   #          #       #    #        #     #  #           #     //\\\\");
+        System.out.println("// ######    #####       #     #     #####    ######    #####      #     //\\\\");
+        System.out.println("// #   #     #            #   #      #        #   #          #     #     //\\\\");
+        System.out.println("// #    #    #             # #       #        #    #   #     #     #     //\\\\");
+        System.out.println("// #     #   #######        #        #######  #     #   #####   #######  //\\\\");
+        System.out.println("//***\\\\_//***\\\\_//***\\\\_//***\\\\_//***\\\\_//***\\\\_//***\\\\__//***\\\\_//***\\\\_//\\\\");
+    }
 	
 	boolean estTerminer(char[][] tab){
 		boolean terminer = false;
@@ -581,4 +593,5 @@ class Reversi{
 		
 	}			
 }
+
 
