@@ -317,13 +317,22 @@ class Reversi{
 		return voisin;
 	}
 			
-		
-		
+	/**	
+	 * Cette méthode ajoute et change le pion sur le plateau aux coordonnées indiquées
+	 * @param x,y deux entiers correspondant aux coordonnées du pion sur le plateau
+	 * @param tab un tableau à double entrée de char correspondant au plateau
+	 * @param val un char correspondant à la couleur/au symbole du joueur
+	 */
 	void changementCase(int x, int y, char[][] tab, char val){
 		tab[y][x] = val;
 	}
 	
-	
+	/**
+	 * Cette méthode change dans la diagonale haut doite-bas gauche les pions différent de la couleur du joueur en train de jouer où les coordonnées sont présentes
+	 * @param t tableau a double entrée de char représentant le plateau
+	 * @param x,y deux entiers correspondant aux coordonnées du pion ajouté au plateau
+	 * @param joueur un entier correspondant au joueur en train de jouer
+	*/
 	void changementDiagonaleHD_BG(char[][]t,int x, int y,int joueur){
         int i=x+1;
         int k=y-1;
@@ -371,7 +380,13 @@ class Reversi{
         }
     }
     
-    
+    /**
+	 * Cette méthode change dans la diagonale haut gauche-bas droite les pions différent de la couleur du joueur en train de jouer où les coordonnées sont présentes
+	 * @param t tableau a double entrée de char représentant le plateau
+	 * @param x,y deux entiers correspondant aux coordonnées du pion ajouté au plateau
+	 * @param joueur un entier correspondant au joueur en train de jouer
+	 * @return un entier coorrespondant au nombre de changement dans la colonne
+	*/
     void changementDiagonaleHG_BD(char[][]t,int x, int y,int joueur){
         int i=x-1;
         int k=y-1;
@@ -419,7 +434,13 @@ class Reversi{
         }
     }
 	
-
+	/**
+	 * Cette méthode change dans la ligne les pions différent de la couleur du joueur en train de jouer où les coordonnées sont présentes
+	 * @param t tableau a double entrée de char représentant le plateau
+	 * @param x,y deux entiers correspondant aux coordonnées du pion ajouté au plateau
+	 * @param joueur un entier correspondant au joueur en train de jouer
+	 * @return un entier coorrespondant au nombre de changement dans la colonne
+	*/
 	void changementLigne(char[][]t,int x, int y,int joueur){
         int i=x-1;
         char signe='X';
@@ -463,7 +484,13 @@ class Reversi{
         }
     }
 
-
+	/**
+	 * Cette méthode change dans la colonne les pions différent de la couleur du joueur en train de jouer où les coordonnées sont présentes
+	 * @param t tableau a double entrée de char représentant le plateau
+	 * @param x,y deux entiers correspondant aux coordonnées du pion ajouté au plateau
+	 * @param joueur un entier correspondant au joueur en train de jouer
+	 * @return un entier coorrespondant au nombre de changement dans la colonne
+	*/
     void changementColonne(char[][]t,int x, int y,int joueur){
         int i=y-1;
         char signe='X';
@@ -507,57 +534,71 @@ class Reversi{
         }
     }
     
-    
-    	int compteDiagonaleHD_BG(char[][]t,int x, int y,int joueur){
+    /**
+	 * Cette fonction compte le nombre de changement de pions dans la diagonale haut doite-bas gauche où les coordonnées sont présentes
+	 * (Utilisée pour le robot en mode solo)
+	 * @param t tableau a double entrée de char représentant le plateau
+	 * @param x,y deux entiers correspondant aux coordonnées du pion ajouté au plateau
+	 * @param joueur un entier correspondant au joueur en train de jouer
+	 * @return un entier coorrespondant au nombre de changement dans la colonne
+	*/ 
+	int compteDiagonaleHD_BG(char[][]t,int x, int y,int joueur){
 		int compteurChanger = 0;
-        int i=x+1;
-        int k=y-1;
-        char signe='X';
-        char autre='O';
-        int compteur = 0;
-        boolean borner=false;
-        if ( joueur==1){
-            signe='O';
-            autre='X';
-        }
-        while(k>=0 && i<t.length && t[k][i]==autre){
-            if(k-1>=0 && i+1<t.length && t[k-1][i+1]==signe){
-                borner=true;
-            }
-            compteur++;
-            i++;
-            k--;
-        }
-        if (borner){
-            for(int j=0;j<=compteur;j++){
+		int i=x+1;
+		int k=y-1;
+		char signe='X';
+		char autre='O';
+		int compteur = 0;
+		boolean borner=false;
+		if ( joueur==1){
+			signe='O';
+			autre='X';
+		}
+		while(k>=0 && i<t.length && t[k][i]==autre){
+			if(k-1>=0 && i+1<t.length && t[k-1][i+1]==signe){
+				borner=true;
+			}
+			compteur++;
+			i++;
+			k--;
+		}
+		if (borner){
+			for(int j=0;j<=compteur;j++){
 				if(t[y-j][x+j] == autre){
 					compteurChanger++;
 				}
-            }
-        }
-        compteur = 0;
-        borner=false;
-        i=x-1;
-        k=y+1;
-        while(k<t.length && i>=0 && t[k][i]==autre){
-            if(k+1<t.length && i-1>=0 && t[k+1][i-1]==signe){
-                borner=true;
-            }
-            compteur++;
-            i--;
-            k++;
-        }
-        if (borner){
-            for(int j=0;j<=compteur;j++){
+			}
+		}
+		compteur = 0;
+		borner=false;
+		i=x-1;
+		k=y+1;
+		while(k<t.length && i>=0 && t[k][i]==autre){
+			if(k+1<t.length && i-1>=0 && t[k+1][i-1]==signe){
+				borner=true;
+			}
+			compteur++;
+			i--;
+			k++;
+		}
+		if (borner){
+			for(int j=0;j<=compteur;j++){
 				if(t[y+j][x-j] == autre){
 					compteurChanger++;
 				}
-            }
-        }
-        return compteurChanger;
+			}
+		}
+		return compteurChanger;
     }
     
-    
+ 	/**
+	 * Cette fonction compte le nombre de changement de pions dans la diagonale haut gauche-bas droite où les coordonnées sont présentes
+	 * (Utilisée pour le robot en mode solo)
+	 * @param t tableau a double entrée de char représentant le plateau
+	 * @param x,y deux entiers correspondant aux coordonnées du pion ajouté au plateau
+	 * @param joueur un entier correspondant au joueur en train de jouer
+	 * @return un entier coorrespondant au nombre de changement dans la colonne
+	*/  
     int compteDiagonaleHG_BD(char[][]t,int x, int y,int joueur){
 		int compteurChanger = 0;
         int i=x-1;
@@ -607,7 +648,14 @@ class Reversi{
         return compteurChanger;
     }
 	
-
+	/**
+	 * Cette fonction compte le nombre de changement de pions dans la ligne où les coordonnées sont présentes
+	 * (Utilisée pour le robot en mode solo)
+	 * @param t tableau a double entrée de char représentant le plateau
+	 * @param x,y deux entiers correspondant aux coordonnées du pion ajouté au plateau
+	 * @param joueur un entier correspondant au joueur en train de jouer
+	 * @return un entier coorrespondant au nombre de changement dans la colonne
+	*/
 	int compteLigne(char[][]t,int x, int y,int joueur){
 		int compteurChanger = 0;
         int i=x-1;
@@ -653,7 +701,14 @@ class Reversi{
         return compteurChanger;
     }
 
-
+	/**
+	 * Cette fonction compte le nombre de changement de pions dans la ligne où les coordonnées sont présentes
+	 * (Utilisée pour le robot en mode solo)
+	 * @param t tableau a double entrée de char représentant le plateau
+	 * @param x,y deux entiers correspondant aux coordonnées du pion ajouté au plateau
+	 * @param joueur un entier correspondant au joueur en train de jouer
+	 * @return un entier coorrespondant au nombre de changement dans la colonne
+	*/
     int compteColonne(char[][]t,int x, int y,int joueur){
 		int compteurChanger = 0;
         int i=y-1;
@@ -700,10 +755,12 @@ class Reversi{
     }
     
     /**
-	Renvoie le meilleur coup a jouer
+	Cette fonction renvoie le meilleur coup a jouer
 	(Utilisé pour le robot en mode solo)
 	@param tab tableau a double entrée de char représentant le plateau
 	@param coup tableau a 
+	@param joueur un entier correspondant au joueur en train de jouer
+	@return le coup réalisant le plus de point
 	*/
     int[] meilleurCoup(char[][] t, int[][] coup, int joueur){
 		int[] meilleur = coup[0];
@@ -719,10 +776,10 @@ class Reversi{
 		return meilleur;
 	}
 	/**
-	Renvoie le nombre du pion choisi
+	Cette fonction renvoie le nombre de pions de la couleur choisi
 	@param tab tableau à double entrée de char représentant le plateau
 	@param signe char représentant le pion/symbole/couleur du joueur
-	@return le nombre de pion de la couleur choisie
+	@return le nombre de pions de la couleur choisie présent sur le plateau
 	*/
 	int score(char[][] tab, char signe){
 		int compteur = 0;
@@ -839,5 +896,6 @@ class Reversi{
 		
 	}			
 }
+
 
 
