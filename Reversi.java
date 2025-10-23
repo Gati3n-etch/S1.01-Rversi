@@ -1,7 +1,7 @@
 class Reversi{
 	void principal(){
-		char[][] t = tableau();
-		displayTab(t);
+		testScore();
+		lancementJeu();
 	}
 	
 	
@@ -17,11 +17,14 @@ class Reversi{
 		/* Mode a 2 */
 		if(mode==2){
 			while(fini == false){
-				if(tour%2 == joueur1){
+				if(tour%2 == joueur1%2){
+					System.out.println("Au tour du joueur 1 de jouer");
 					coupJouer(plateauJeu,joueur1);
 				}else{
+					System.out.println("Au tour du joueur 2 de jouer");
 					coupJouer(plateauJeu,joueur2);
 				}
+				tour++;
 				fini = estTerminer(plateauJeu);
 			}
 			int gagnant = resultat(plateauJeu);
@@ -118,11 +121,11 @@ class Reversi{
 	
 	
 	int[] choixJoueur(int mode){
-		int joueur1 = SimpleInput.getChar("Joueur 1 choisissez la couleur des pionts [ blanc (1) ou noir (2) ] : ");
+		int joueur1 = SimpleInput.getInt("Joueur 1 choisissez la couleur des pionts [ blanc (1) ou noir (2) ] : ");
 		int joueur2 = 2;
 		while(joueur1 != 1 && joueur1 != 2){
 			System.out.println("Valeur invalide !");
-			joueur1 = SimpleInput.getChar("Joueur 1 choisissez la couleur des pionts [ blanc (1) ou noir (2) ] : ");
+			joueur1 = SimpleInput.getInt("Joueur 1 choisissez la couleur des pionts [ blanc (1) ou noir (2) ] : ");
 		}
 		if(mode==2){
 			if(joueur1 == 1){
@@ -196,6 +199,10 @@ class Reversi{
 		/**
 		 * Appel fonction pour remplacer les cases
 		*/
+		verifLigne(tab,x,y,joueur);
+		verifColonne(tab,x,y,joueur);
+		verifDiagonaleHD_BG(tab,x,y,joueur);
+		verifDiagonaleHG_BD(tab,x,y,joueur);
 		displayTab(tab);
 	}
 	
@@ -215,6 +222,30 @@ class Reversi{
 		}
 		return jouable;
 	}
+	
+	
+	int[][] listeCoupJouable(char[][]t){
+        int cpt=0;
+        int cptTab=0;
+        for(int i=0;i<t.length;i++){
+            for(int j=0;j<t.length;j++){
+                if(estJouable(j,i,t)){
+                    cpt++;
+                }
+            }
+        }
+        int[][] tab=new int[cpt][2];
+        for(int i=0;i<t.length;i++){
+            for(int j=0;j<t.length;j++){
+                if(estJouable(j,i,t)){
+                    tab[cptTab][0]=j;
+                    tab[cptTab][1]=i;
+                    cptTab++;
+                }
+            }
+        }
+        return tab;
+    }
 	
 	
 	
@@ -258,317 +289,189 @@ class Reversi{
 	}
 	
 	
-	void verifDiagonaleD(char[][]t,int x, int y,int joueur){
-		int i=1;
-		int j=1;
-		char signe='X';
-		if ( joueur==1){
-			signe='O';
-		}
-		while(t[x-i][y-i]!=' ' && t[x-i][y-i]!=signe){	
-			i++;
-		}
-		if (i>2){
-			while(t[x-j][y-j]!=' '&& t[x-j][y-j]!=signe){
-				changementCase(x-j,y-j,t,signe);
-				j++;
-			}
-		}else if(i<=2){
-			i=1;
-			j=1;
-			while(t[x+i][y+i]!=' '&& t[x+i][y+i]!=signe){	
-				i++;
-			}
-			if (i>2){
-				while(t[x+j][y+j]!=' '&& t[x+j][y+j]!=signe){
+	void verifDiagonaleHD_BG(char[][]t,int x, int y,int joueur){
+        int i=x+1;
+        int k=y-1;
+        char signe='X';
+        char autre='O';
+        int compteur = 0;
+        boolean borner=false;
+        if ( joueur==1){
+            signe='O';
+            autre='X';
+        }
+        while(k>=0 && i<t.length && t[k][i]==autre){
+            if(k-1>=0 && i+1<t.length && t[k-1][i+1]==signe){
+                borner=true;
+            }
+            compteur++;
+            i++;
+            k--;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y-j][x+j] == autre){
+					changementCase(x+j,y-j,t,signe);
+				}
+            }
+        }
+        compteur = 0;
+        borner=false;
+        i=x-1;
+        k=y+1;
+        while(k<t.length && i>=0 && t[k][i]==autre){
+            if(k+1<t.length && i-1>=0 && t[k+1][i-1]==signe){
+                borner=true;
+            }
+            compteur++;
+            i--;
+            k++;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y+j][x-j] == autre){
+					changementCase(x-j,y+j,t,signe);
+				}
+            }
+        }
+    }
+    
+    
+    void verifDiagonaleHG_BD(char[][]t,int x, int y,int joueur){
+        int i=x-1;
+        int k=y-1;
+        char signe='X';
+        char autre='O';
+        int compteur = 0;
+        boolean borner=false;
+        if ( joueur==1){
+            signe='O';
+            autre='X';
+        }
+        while(i>=0 && k>=0 && t[k][i]==autre){
+            if(i-1>=0 && k-1>=0 && t[k-1][i-1]==signe){
+                borner=true;
+            }
+            compteur++;
+            i--;
+            k--;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y-j][x-j] == autre){
+					changementCase(x-j,y-j,t,signe);
+				}
+            }
+        }
+        compteur = 0;
+        borner=false;
+        i=x+1;
+        k=y+1;
+        while(i<t.length && k<t.length && t[k][i]==autre){
+            if(i+1<t.length && k+1<t.length && t[k+1][i+1]==signe){
+                borner=true;
+            }
+            compteur++;
+            i++;
+            k++;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y+j][x+j] == autre){
 					changementCase(x+j,y+j,t,signe);
-					j++;
 				}
-			}
-		}
-	}
-	
-	
-	void verifDiagonaleG(char[][]t,int x, int y,int joueur){
-		int i=1;
-		int j=1;
-		char signe='X';
-		if ( joueur==1){
-			signe='O';
-		}
-		while(t[y-i][x-i]!=' ' && t[y-i][x-i]!=signe && i<t.length){	
-			i++;
-		}
-		if (i>2){
-			while(t[y-j][x-j]!=' '&& t[y-j][x-j]!=signe && i<t.length){
-				changementCase(y-j,x-j,t,signe);
-				j++;
-			}
-		}else if(i<=2){
-			i=1;
-			j=1;
-			while(t[y+i][x+i]!=' '&& t[y+i][x+i]!=signe && j<t.length){	
-				i++;
-			}
-			if (i>2){
-				while(t[y+j][x+j]!=' '&& t[y+j][x+j]!=signe && j<t.length){
-					changementCase(y+j,x+j,t,signe);
-					j++;
-				}
-			}
-		}
-	}
+            }
+        }
+    }
 	
 
 	void verifLigne(char[][]t,int x, int y,int joueur){
-		int i=1;
-		int j=1;
-		char signe='X';
-		if ( joueur==1){
-			signe='O';
-		}
-		while(t[x][y-i]!=' ' && t[x][y-i]!=signe){	
-			i++;
-		}
-		if (i>2){
-			while(t[x][y-j]!=' '&& t[x][y-j]!=signe){
-				changementCase(x,y-j,t,signe);
-				j++;
+        int i=x-1;
+        char signe='X';
+        char autre='O';
+        boolean borner=false;
+        int compteur = 0;
+        if ( joueur==1){
+            signe='O';
+            autre='X';
+        }
+        while(i>=0 && t[y][i]==autre){
+            if(i-1>=0 && t[y][i-1]==signe){
+				borner=true;
 			}
-		}else if(i<=2){
-			i=1;
-			j=1;
-			while(t[x][y+i]!=' '&& t[x][y+i]!=signe){	
-				i++;
-			}
-			if (i>2){
-				while(t[x][y+j]!=' '&& t[x][y+j]!=signe){
-					changementCase(x,y+j,t,signe);
-					j++;
+			compteur++;
+			i--;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y][x-j] == autre){
+					changementCase(x-j,y,t,signe);
 				}
+            }
+        }
+        compteur = 0;
+        borner=false;
+        i=x+1;
+        while(i<t.length && t[y][i]==autre){
+            if(i+1<t.length && t[y][i+1]==signe){
+				borner=true;
 			}
-		}
-	}
-	
-	
-	void verifColonne(char[][]t,int x, int y,int joueur){
-		int i=1;
-		int j=1;
-		char signe='X';
-		if ( joueur==1){
-			signe='O';
-		}
-		while(t[x-i][y]!=' ' && t[x-i][y]!=signe){	
+			compteur++;
 			i++;
-		}
-		if (i>2){
-			while(t[x-j][y]!=' '&& t[x-j][y]!=signe){
-				changementCase(x-j,y,t,signe);
-				j++;
-			}
-		}else if(i<=2){
-			i=1;
-			j=1;
-			while(t[x+i][y]!=' '&& t[x+i][y]!=signe){	
-				i++;
-			}
-			if (i>2){
-				while(t[x+j][y]!=' '&& t[x+j][y]!=signe){
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y][x+j] == autre){
 					changementCase(x+j,y,t,signe);
-					j++;
 				}
-			}
-		}
-	}
-		boolean verifDiagonaleDB(char[][]t,int x, int y,int joueur){
-		boolean a=false;
-		int i=1;
-		int j=1;
-		char signe='X';
-		if ( joueur==1){
-			signe='O';
-		}
-		while(t[x-i][y-i]!=' ' && t[x-i][y-i]!=signe && i<t.length-x && i<t.length-y){	
-			i++;
-		}
-		if (i>2){
-			while(t[x-j][y-j]!=' '&& t[x-j][y-j]!=signe && j<t.length-x && j<t.length-y){
-				j++;
-			}
-		}else if(i<=2){
-			i=1;
-			j=1;
-			while(t[x+i][y+i]!=' '&& t[x+i][y+i]!=signe && i<t.length-x && i<t.length-y){	
-				i++;
-			}
-			if (i>2){
-				while(t[x+j][y+j]!=' '&& t[x+j][y+j]!=signe && j<t.length-x && j<t.length-y){
-					j++;
-				}
-			}
-		}
-		if(i==j){
-			a=true;
-		}
-		return a;
-	}
-		
-	boolean verifDiagonaleGB(char[][]t,int x, int y,int joueur){
-		boolean a= false;
-		int i=1;
-		int j=1;
-		char signe='X';
-		if ( joueur==1){
-			signe='O';
-		}
-		while(t[y-i][x-i]!=' ' && t[y-i][x-i]!=signe && i<t.length-x && i<t.length-y){	
-			i++;
-		}
-		if (i>2){
-			while(t[y-j][x-j]!=' '&& t[y-j][x-j]!=signe && j<t.length-x && j<t.length-y){
-				j++;
-			}
-		}else if(i<=2){
-			i=1;
-			j=1;
-			while(t[y+i][x+i]!=' '&& t[y+i][x+i]!=signe && i<t.length-x && i<t.length-y){	
-				i++;
-			}
-			if (i>2){
-				while(t[y+j][x+j]!=' '&& t[y+j][x+j]!=signe && j<t.length-x && j<t.length-y){
-					j++;
-				}
-			}
-		}
-		if(i==j){
-			a=true;
-		}
-		return a;
-	}
-	boolean verifLigneB(char[][]t,int x, int y,int joueur){
-		int i=x-1;
-		char signe='X';
-		char autre='O';
-		boolean different=false;
-		if ( joueur==1){
-			signe='O';
-			autre='X';
-		}
-		while(i>=0 && t[x][i]==autre){	
-			i--;
-			different=true;
-		}
-		if (different && t[x][i]==autre){
-			for(int j=i+1;j<x;j++){
-				t[x][j]=signe;
-			}
-		}
-		i=x+1;
-		while(i<t.length && t[x][i]==autre){	
-			i++;
-			different=true;
-		}
-		if (different && t[x][i]==autre && i<t.length){
-			for(int j=i+1;j<x;j++){
-				t[x][j]=signe;
-			}
-		}
-		return different;
-	}
-	
-	boolean verifColonneB(char[][]t,int x, int y,int joueur){
-		int i=x-1;
-		char signe='X';
-		char autre='O';
-		boolean different=false;
-		if ( joueur==1){
-			signe='O';
-			autre='X';
-		}
-		while(i>=0 && t[i][y]==autre){	
-			i--;
-			different=true;
-		}
-		if (different && t[i][y]==autre){
-			for(int j=i+1;j<x;j++){
-				t[j][y]=signe;
-			}
-		}
-		i=x+1;
-		while(i<t.length && t[i][y]==autre){	
-			i++;
-			different=true;
-		}
-		if (different && t[i][y]==autre && i<t.length){
-			for(int j=i+1;j<x;j++){
-				t[j][y]=signe;
-			}
-		}
-		return different;
-	}
-		void regles(char[][]t,int x, int y,int joueur){
-		if (verifColonneB(t,x,y,joueur)){
-			verifColonne(t,x,y,joueur);
-		}
-		else if (verifLigneB(t,x,y,joueur)){
-			verifLigne(t,x,y,joueur);
-		}
-		else if (verifDiagonaleDB(t,x,y,joueur)){
-			verifDiagonaleD(t,x,y,joueur);
-		}
-		else if (verifDiagonaleGB(t,x,y,joueur)){
-			verifDiagonaleG(t,x,y,joueur);
-		}
-	}
-	/**
-	 * Teste la méthode regles()
-	 */
-	 void testRegles () {
-		char[][] tLigne={{' ',' ',' ',' '},{'X','O','X',' '},{' ','X','O',' '},{' ',' ',' ',' '}};
-		char[][] tColonne={{' ',' ','O',' '},{' ','O','X',' '},{' ','X','O',' '},{' ',' ',' ',' '}};
-		char[][] tHorizontalD={{'O',' ',' ',' '},{' ','O','X',' '},{' ','X','O',' '},{' ',' ',' ','O'}};
-		char[][] tHorizontalG={{' ',' ',' ','X'},{' ','O','X',' '},{' ','X','O',' '},{'X',' ',' ',' '}};
+            }
+        }
+    }
 
-		System.out.println ();
-		System.out.println ("*** regles()");
-		testCasRegles(tLigne,1,0,2,true);
-		testCasRegles(tColonne,0,2,1,true);
-		testCasRegles(tHorizontalD,0,3,1,true);
-		testCasRegles(tHorizontalG,3,0,2,true);
-	}
-	/**
-	* teste un appel de estDiviseur
-	* @param x,y valeur des coordonnées
-	* @param t correspond au plateau de jeu
-	* @param joueur correspond au symbole placé sur le plateau
-	* @param result resultat attendu
-	*/
-	void testCasRegles (char[][]t,int x, int y,int joueur, boolean result) {
-		// Affichage
-		System.out.print ("regle ("+displayTabTest(t)+","+x+","+y+","+joueur+ ") \t= " + result + "\t : ");
-		// Appel
-		regles(t,x,y,joueur);
-		boolean resExec=verifColonneB(t,x,y,joueur);
-		boolean resExec1=verifLigneB(t,x,y,joueur);
-		boolean resExec2=verifDiagonaleDB(t,x,y,joueur);
-		boolean resExec3=verifDiagonaleGB(t,x,y,joueur);
-		// Verification
-		if (resExec == result){
-			System.out.println ("OK");
-		}
-		else if (resExec1 == result){
-			System.out.println ("OK");
-		}
-		else if (resExec2 == result){
-			System.out.println ("OK");
-		}
-		else if (resExec3 == result){
-			System.out.println ("OK");
-		} else {
-			System.err.println ("ERREUR");
-		}
-	}
-	
+
+    void verifColonne(char[][]t,int x, int y,int joueur){
+        int i=y-1;
+        char signe='X';
+        char autre='O';
+        boolean borner=false;
+        int compteur = 0;
+        if ( joueur==1){
+            signe='O';
+            autre='X';
+        }
+        while(i>=0 && t[i][x]==autre){
+            if(i-1>=0 && t[i-1][x]==signe){
+                borner=true;
+            }
+            compteur++;
+            i--;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y-j][x] == autre){
+					changementCase(x,y-j,t,signe);
+				}
+            }
+        }
+        borner=false;
+        compteur = 0;
+        i=y+1;
+        while(i<t.length && t[i][x]==autre){
+            if(i+1<t.length && t[i+1][x]==signe){
+                borner=true;
+            }
+            compteur++;
+            i++;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y+j][x] == autre){
+					changementCase(x,y+j,t,signe);
+				}
+            }
+        }
+    }
+
 	
 	int score(char[][] tab, char signe){
 		int compteur = 0;
@@ -581,6 +484,61 @@ class Reversi{
 		}
 		return compteur;
 	}
+	
+    /**
+	Teste la méthode regles()
+	*/
+	void testScore () {
+		char[][] t1={{' ','X',' ',' '},{'O','O','O',' '},{' ','O','O',' '},{' ',' ','X',' '}};
+		char[][] t2={{' ',' ','O',' '},{' ','O','X',' '},{' ','X','O',' '},{' ',' ',' ',' '}};
+		char[][] t3={{'O',' ',' ',' '},{' ','O','X',' '},{' ','X','O',' '},{' ',' ',' ','O'}};
+		char[][] t4={{' ',' ',' ','X'},{' ','O','X',' '},{' ','X','O',' '},{'X',' ',' ',' '}};
+
+        System.out.println ();
+        System.out.println ("**testScore()**");
+        testCasScore(t1,'O',5);
+        testCasScore(t2,'X',2);
+        testCasScore(t3,'O',2);
+        testCasScore(t4,'X',7);
+    }
+    
+    
+    /** 
+	teste un appel de estDiviseur
+	@param x,y valeur des coordonnées
+	@param t correspond au plateau de jeu
+	@param joueur correspond au symbole placé sur le plateau
+	@param result resultat attendu
+	*/
+	void testCasScore (char[][]t,char signe,int result) {// Affichage
+		System.out.print ("score (");
+		displayTabTest(t);
+		System.out.print(","+signe+") \t= " + result + "\t : ");// Appel
+		int resExec=score(t,signe);// Verification
+		if (resExec == result){
+			System.out.println ("OK");
+		} else {
+			System.err.println ("ERREUR");
+		}
+	}
+		
+		
+	
+	void displayTabTest(char[][] t){
+        System.out.print("{");
+        for(int i = 0; i<t.length; i++){
+            System.out.print("{");
+            for(int j = 0; j<t.length-1; j++){
+                System.out.print(t[i][j] + ",");
+            }
+            System.out.print(t[i][t.length-1]+"}");
+            if(i != t.length-1){
+				System.out.print(",");
+			}
+        }
+        System.out.print("}");
+    }
+    
 	
 	void displayTab(char[][] t){
 		String ligne_haut = "    ";
@@ -621,28 +579,6 @@ class Reversi{
 		System.out.println("Nombre de pionts sur le plateau : O = "+ score(t,'O') +" / X = "+ score(t,'X'));
 		System.out.println("O : piont blanc / X : piont noir / ~ : case valide");
 		
-	}	
-	String displayTabTest(char[][] t){
-		String afficher="{";
-		int i = 0;
-		int j=0;
-		afficher+="{";
-		while(j<t.length-1){
-			while(i<t.length-1){
-				afficher+=t[i] + ",";
-				i=i+1;
-			}
-			if(t.length !=0){
-				afficher+=t[i]+"}";
-			}else{
-				afficher+="}";
-			}
-			if(j!=t.length){
-				afficher+=",";
-			}
-		}
-		afficher+="}";
-		return afficher;
-	}	
+	}			
 }
 
