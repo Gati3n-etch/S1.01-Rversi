@@ -699,7 +699,12 @@ class Reversi{
         return compteurChanger;
     }
     
-    
+    /**
+	Renvoie le meilleur coup a jouer
+	(Utilisé pour le robot en mode solo)
+	@param tab tableau a double entrée de char représentant le plateau
+	@param coup tableau a 
+	*/
     int[] meilleurCoup(char[][] t, int[][] coup, int joueur){
 		int[] meilleur = coup[0];
 		int max_coup = compteColonne(t,meilleur[0],meilleur[1],joueur) + compteLigne(t,meilleur[0],meilleur[1],joueur) + compteDiagonaleHD_BG(t,meilleur[0],meilleur[1],joueur) + compteDiagonaleHG_BD(t,meilleur[0],meilleur[1],joueur);
@@ -713,7 +718,12 @@ class Reversi{
 		}
 		return meilleur;
 	}
-	
+	/**
+	Renvoie le nombre du pion choisi
+	@param tab tableau à double entrée de char représentant le plateau
+	@param signe char représentant le pion/symbole/couleur du joueur
+	@return le nombre de pion de la couleur choisie
+	*/
 	int score(char[][] tab, char signe){
 		int compteur = 0;
 		for(int y = 0; y < tab.length; y++){
@@ -727,7 +737,7 @@ class Reversi{
 	}
 	
     /**
-	Teste la méthode regles()
+	Teste la méthode score()
 	*/
 	void testScore () {
 		char[][] t1={{' ','X',' ',' '},{'O','O','O',' '},{' ','O','O',' '},{' ',' ','X',' '}};
@@ -764,7 +774,11 @@ class Reversi{
 	}
 		
 		
-	
+	/**
+	affiche un tableau
+	(utilisée dans les fonctions test et test cas)
+	@param t tableau à double entrée de char correspondant au plateau
+	*/
 	void displayTabTest(char[][] t){
         System.out.print("{");
         for(int i = 0; i<t.length; i++){
@@ -780,7 +794,10 @@ class Reversi{
         System.out.print("}");
     }
     
-	
+	/**
+	affiche le plateau de jeu
+	@param t tableau de char
+	*/
 	void displayTab(char[][] t){
 		String ligne_haut = "    ";
 		for(int i = 0; i < t.length ; i++){
@@ -822,4 +839,5 @@ class Reversi{
 		
 	}			
 }
+
 
