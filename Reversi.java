@@ -10,9 +10,9 @@ class Reversi{
 		int mode = choixMode();
 		char[][] plateauJeu = tableau();
 		displayTab(plateauJeu);
-		int[] couleurPiontJoueur = choixJoueur(mode);
-		int joueur1 = couleurPiontJoueur[0];
-		int joueur2 = couleurPiontJoueur[1];
+		int[] couleurPionsJoueur = choixJoueur(mode);
+		int joueur1 = couleurPionsJoueur[0];
+		int joueur2 = couleurPionsJoueur[1];
 		int tour = 0;
 		boolean fini = false;
 		/* Mode a 2 */
@@ -30,35 +30,40 @@ class Reversi{
 			}
 			int gagnant = resultat(plateauJeu);
 			if(gagnant == joueur1){
-				System.out.println("Le joueur 1 à gagné !");
+				System.out.println("Le joueur 1 à gagne !");
 			}else if(gagnant == joueur2){
-				System.out.println("Le joueur 2 à gagné !");
+				System.out.println("Le joueur 2 à gagne !");
 			}else{
-				System.out.println("Egalité !");
+				System.out.println("Egalite !");
 			}
 		}
 		/* Mode solo */
 		else{
 			while(fini == false){
-				if(tour%2 == joueur1){
+				if(tour%2 == joueur1%2){
 					coupJouer(plateauJeu,joueur1);
 				}else{
-					coupJouer(plateauJeu,joueur2);
+					coupRobot(plateauJeu, joueur2);
 				}
+				tour++;
 				fini = estTerminer(plateauJeu);
 			}
 			int gagnant = resultat(plateauJeu);
 			if(gagnant == joueur1){
-				System.out.println("Le joueur 1 à gagné !");
+				System.out.println("Le joueur 1 à gagne !");
 			}else if(gagnant == joueur2){
-				System.out.println("Le robot à gagné !");
+				System.out.println("Le robot à gagne !");
 			}else{
-				System.out.println("Egalité !");
+				System.out.println("Egalite !");
 			}
 		}
 	}
-
+	
+	
 	void titre(){
+		System.out.println();
+		System.out.println();
+		System.out.println();
 		System.out.println("//***\\\\_//***\\\\_//***\\\\_//***\\\\_//***\\\\_//***\\\\_//***\\\\__//***\\\\_//***\\\\_//\\\\");
         System.out.println("// ######    #######  #           #  #######  ######    #####   #######  //\\\\");
         System.out.println("// #     #   #         #         #   #        #     #  #     #     #     //\\\\");
@@ -68,7 +73,9 @@ class Reversi{
         System.out.println("// #    #    #             # #       #        #    #   #     #     #     //\\\\");
         System.out.println("// #     #   #######        #        #######  #     #   #####   #######  //\\\\");
         System.out.println("//***\\\\_//***\\\\_//***\\\\_//***\\\\_//***\\\\_//***\\\\_//***\\\\__//***\\\\_//***\\\\_//\\\\");
+        System.out.println();
     }
+	
 	
 	boolean estTerminer(char[][] tab){
 		boolean terminer = false;
@@ -133,34 +140,34 @@ class Reversi{
 	
 	
 	int[] choixJoueur(int mode){
-		int joueur1 = SimpleInput.getInt("Joueur 1 choisissez la couleur des pionts [ blanc (1) ou noir (2) ] : ");
+		int joueur1 = SimpleInput.getInt("Joueur 1 choisissez la couleur des pions [ blanc (1) ou noir (2) ] : ");
 		int joueur2 = 2;
 		while(joueur1 != 1 && joueur1 != 2){
 			System.out.println("Valeur invalide !");
-			joueur1 = SimpleInput.getInt("Joueur 1 choisissez la couleur des pionts [ blanc (1) ou noir (2) ] : ");
+			joueur1 = SimpleInput.getInt("Joueur 1 choisissez la couleur des pions [ blanc (1) ou noir (2) ] : ");
 		}
 		if(mode==2){
 			if(joueur1 == 1){
-				System.out.println("Joueur 2 aura les pionts de couleurs noirs");
+				System.out.println("Joueur 2 aura les pions de couleurs noirs");
 				joueur2 = 2;
 			}
 			else{
-				System.out.println("Joueur 2 aura les pionts de couleurs blancs");
+				System.out.println("Joueur 2 aura les pions de couleurs blancs");
 				joueur2 = 1;
 			}
 		}
 		else{
 			if(joueur1 == 1){
-				System.out.println("Le robot aura les pionts de couleurs noirs");
+				System.out.println("Le robot aura les pions de couleurs noirs");
 				joueur2 = 2;
 			}
 			else{
-				System.out.println("Le robot aura les pionts de couleurs blancs");
+				System.out.println("Le robot aura les pions de couleurs blancs");
 				joueur2 = 1;
 			}
 		}
-		int[] piontJoueur = {joueur1,joueur2};
-		return piontJoueur;
+		int[] pionsJoueur = {joueur1,joueur2};
+		return pionsJoueur;
 	}
 	
 	
@@ -208,16 +215,32 @@ class Reversi{
 			y = SimpleInput.getInt("Choisissez la ligne : ");
 		}
 		changementCase(x,y,tab,signe);
-		/**
+		/*
 		 * Appel fonction pour remplacer les cases
 		*/
-		verifLigne(tab,x,y,joueur);
-		verifColonne(tab,x,y,joueur);
-		verifDiagonaleHD_BG(tab,x,y,joueur);
-		verifDiagonaleHG_BD(tab,x,y,joueur);
+		changementLigne(tab,x,y,joueur);
+		changementColonne(tab,x,y,joueur);
+		changementDiagonaleHD_BG(tab,x,y,joueur);
+		changementDiagonaleHG_BD(tab,x,y,joueur);
 		displayTab(tab);
 	}
 	
+	
+	void coupRobot(char[][]t, int joueur){
+		char signe = 'O';
+		if(joueur == 2){
+			signe = 'X';
+		}
+		int[][] listeCoup = listeCoupJouable(t);
+		int[] coupChoisi = meilleurCoup(t,listeCoup,joueur);
+		changementCase(coupChoisi[0], coupChoisi[1], t, signe);
+		changementLigne(t,coupChoisi[0],coupChoisi[1],joueur);
+		changementColonne(t,coupChoisi[0],coupChoisi[1],joueur);
+		changementDiagonaleHD_BG(t,coupChoisi[0],coupChoisi[1],joueur);
+		changementDiagonaleHG_BD(t,coupChoisi[0],coupChoisi[1],joueur);
+		displayTab(t);
+	}
+		
 		
 	
 	boolean estJouable(int x, int y, char[][] tab){
@@ -301,7 +324,7 @@ class Reversi{
 	}
 	
 	
-	void verifDiagonaleHD_BG(char[][]t,int x, int y,int joueur){
+	void changementDiagonaleHD_BG(char[][]t,int x, int y,int joueur){
         int i=x+1;
         int k=y-1;
         char signe='X';
@@ -349,7 +372,7 @@ class Reversi{
     }
     
     
-    void verifDiagonaleHG_BD(char[][]t,int x, int y,int joueur){
+    void changementDiagonaleHG_BD(char[][]t,int x, int y,int joueur){
         int i=x-1;
         int k=y-1;
         char signe='X';
@@ -397,7 +420,7 @@ class Reversi{
     }
 	
 
-	void verifLigne(char[][]t,int x, int y,int joueur){
+	void changementLigne(char[][]t,int x, int y,int joueur){
         int i=x-1;
         char signe='X';
         char autre='O';
@@ -441,7 +464,7 @@ class Reversi{
     }
 
 
-    void verifColonne(char[][]t,int x, int y,int joueur){
+    void changementColonne(char[][]t,int x, int y,int joueur){
         int i=y-1;
         char signe='X';
         char autre='O';
@@ -483,7 +506,213 @@ class Reversi{
             }
         }
     }
+    
+    
+    	int compteDiagonaleHD_BG(char[][]t,int x, int y,int joueur){
+		int compteurChanger = 0;
+        int i=x+1;
+        int k=y-1;
+        char signe='X';
+        char autre='O';
+        int compteur = 0;
+        boolean borner=false;
+        if ( joueur==1){
+            signe='O';
+            autre='X';
+        }
+        while(k>=0 && i<t.length && t[k][i]==autre){
+            if(k-1>=0 && i+1<t.length && t[k-1][i+1]==signe){
+                borner=true;
+            }
+            compteur++;
+            i++;
+            k--;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y-j][x+j] == autre){
+					compteurChanger++;
+				}
+            }
+        }
+        compteur = 0;
+        borner=false;
+        i=x-1;
+        k=y+1;
+        while(k<t.length && i>=0 && t[k][i]==autre){
+            if(k+1<t.length && i-1>=0 && t[k+1][i-1]==signe){
+                borner=true;
+            }
+            compteur++;
+            i--;
+            k++;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y+j][x-j] == autre){
+					compteurChanger++;
+				}
+            }
+        }
+        return compteurChanger;
+    }
+    
+    
+    int compteDiagonaleHG_BD(char[][]t,int x, int y,int joueur){
+		int compteurChanger = 0;
+        int i=x-1;
+        int k=y-1;
+        char signe='X';
+        char autre='O';
+        int compteur = 0;
+        boolean borner=false;
+        if ( joueur==1){
+            signe='O';
+            autre='X';
+        }
+        while(i>=0 && k>=0 && t[k][i]==autre){
+            if(i-1>=0 && k-1>=0 && t[k-1][i-1]==signe){
+                borner=true;
+            }
+            compteur++;
+            i--;
+            k--;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y-j][x-j] == autre){
+					compteurChanger++;
+				}
+            }
+        }
+        compteur = 0;
+        borner=false;
+        i=x+1;
+        k=y+1;
+        while(i<t.length && k<t.length && t[k][i]==autre){
+            if(i+1<t.length && k+1<t.length && t[k+1][i+1]==signe){
+                borner=true;
+            }
+            compteur++;
+            i++;
+            k++;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y+j][x+j] == autre){
+					compteurChanger++;
+				}
+            }
+        }
+        return compteurChanger;
+    }
+	
 
+	int compteLigne(char[][]t,int x, int y,int joueur){
+		int compteurChanger = 0;
+        int i=x-1;
+        char signe='X';
+        char autre='O';
+        boolean borner=false;
+        int compteur = 0;
+        if ( joueur==1){
+            signe='O';
+            autre='X';
+        }
+        while(i>=0 && t[y][i]==autre){
+            if(i-1>=0 && t[y][i-1]==signe){
+				borner=true;
+			}
+			compteur++;
+			i--;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y][x-j] == autre){
+					compteurChanger++;
+				}
+            }
+        }
+        compteur = 0;
+        borner=false;
+        i=x+1;
+        while(i<t.length && t[y][i]==autre){
+            if(i+1<t.length && t[y][i+1]==signe){
+				borner=true;
+			}
+			compteur++;
+			i++;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y][x+j] == autre){
+					compteurChanger++;
+				}
+            }
+        }
+        return compteurChanger;
+    }
+
+
+    int compteColonne(char[][]t,int x, int y,int joueur){
+		int compteurChanger = 0;
+        int i=y-1;
+        char signe='X';
+        char autre='O';
+        boolean borner=false;
+        int compteur = 0;
+        if ( joueur==1){
+            signe='O';
+            autre='X';
+        }
+        while(i>=0 && t[i][x]==autre){
+            if(i-1>=0 && t[i-1][x]==signe){
+                borner=true;
+            }
+            compteur++;
+            i--;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y-j][x] == autre){
+					compteurChanger++;
+				}
+            }
+        }
+        borner=false;
+        compteur = 0;
+        i=y+1;
+        while(i<t.length && t[i][x]==autre){
+            if(i+1<t.length && t[i+1][x]==signe){
+                borner=true;
+            }
+            compteur++;
+            i++;
+        }
+        if (borner){
+            for(int j=0;j<=compteur;j++){
+				if(t[y+j][x] == autre){
+					compteurChanger++;
+				}
+            }
+        }
+        return compteurChanger;
+    }
+    
+    
+    int[] meilleurCoup(char[][] t, int[][] coup, int joueur){
+		int[] meilleur = coup[0];
+		int max_coup = compteColonne(t,meilleur[0],meilleur[1],joueur) + compteLigne(t,meilleur[0],meilleur[1],joueur) + compteDiagonaleHD_BG(t,meilleur[0],meilleur[1],joueur) + compteDiagonaleHG_BD(t,meilleur[0],meilleur[1],joueur);
+		int nbCoupActuel = 0;
+		for(int i = 1; i<coup.length; i++){
+			nbCoupActuel = compteColonne(t,coup[i][0],coup[i][1],joueur) + compteLigne(t,coup[i][0],coup[i][1],joueur) + compteDiagonaleHD_BG(t,coup[i][0],coup[i][1],joueur) + compteDiagonaleHG_BD(t,coup[i][0],coup[i][1],joueur);
+			if(nbCoupActuel > max_coup){
+				max_coup = nbCoupActuel;
+				meilleur = coup[i];
+			}
+		}
+		return meilleur;
+	}
 	
 	int score(char[][] tab, char signe){
 		int compteur = 0;
@@ -588,10 +817,9 @@ class Reversi{
 			System.out.print("----");
 		}
 		System.out.println();
-		System.out.println("Nombre de pionts sur le plateau : O = "+ score(t,'O') +" / X = "+ score(t,'X'));
-		System.out.println("O : piont blanc / X : piont noir / ~ : case valide");
+		System.out.println("Nombre de pions sur le plateau : O = "+ score(t,'O') +" / X = "+ score(t,'X'));
+		System.out.println("O : pions blanc / X : pions noir / ~ : case valide");
 		
 	}			
 }
-
 
