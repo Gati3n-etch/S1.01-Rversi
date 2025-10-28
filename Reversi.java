@@ -113,7 +113,12 @@ class Reversi{
 	}
 	
 	
-	
+	/**
+	 * Recherche si un pions(signe) est présent sur le plateau(tableau)
+	 * @param tab tableau de char à double entré représentant le plateau de jeu
+	 * @param signe X ou O qui représentent la couleur des pions
+	 * @return vrai si le pions est présent sur le plateau sinon faux
+	 */
 	boolean estPresent(char[][] tab, char signe){
 		boolean present = false;
 		for(int i = 0; i < tab.length; i++){
@@ -909,6 +914,7 @@ class Reversi{
 		
 	}			
 }
+
 
 
 
