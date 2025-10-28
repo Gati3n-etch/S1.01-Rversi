@@ -131,7 +131,12 @@ class Reversi{
 		return present;
 	}
 				
-				
+
+	/**
+	 * Recherche quel joueur est gagnant ou si il y a une égalité
+	 * @param tab tableau de char à double entré représentant le plateau de jeu
+	 * @return Retourne le gegnant sous forme d'un nombre : 1 (blanc), 2 (noir) et 0 (égalité)
+	 */
 	int resultat(char[][]tab){
 		int compteurO = score(tab,'O');
 		int compteurX = score(tab,'X');
@@ -146,7 +151,10 @@ class Reversi{
 		return gagnant;
 	}
 
-
+	/**
+	 * Demande au joueur de choisir le mode de jeu
+	 * @return Retourne le mode 1 solo et 2 duo
+	 */
 	int choixMode(){
 		int modeJeu=SimpleInput.getInt("Choisissez le mode jeu entre solo (1) et duo (2) : ");
 		while (modeJeu != 1 && modeJeu != 2){
@@ -156,7 +164,11 @@ class Reversi{
 		return modeJeu;
 	}
 	
-	
+	/**
+	 * Demande au joueur de choisir sa couleur
+	 * @param mode est le mode choisi par le joueur
+	 * @return la liste des couleurs choisi par les joueurs
+	 */
 	int[] choixJoueur(int mode){
 		int joueur1 = SimpleInput.getInt("Joueur 1 choisissez la couleur des pions [ blanc (1) ou noir (2) ] : ");
 		int joueur2 = 2;
@@ -189,7 +201,10 @@ class Reversi{
 	}
 	
 	
-	
+	/**
+	 * Créer un plateau d'une taille choisi par le joueur
+	 * @return Retourne le plateau
+	 */
 	char[][] tableau(){
 		int taille=SimpleInput.getInt("Entrez la taille du tableau : ");
 		while (taille%2!=0 || taille<4 || taille>16){
@@ -211,7 +226,11 @@ class Reversi{
 	}
 	
 	
-	
+	/**
+	 * Demande au joueur où jouer le coup, vérifie si le coup est jouable et modifie les pionts si nécessaire
+	 * @param tab tableau de char à double entré représentant le plateau de jeu
+	 * @param joueur est le numéro du joueur qui joue
+	 */
 	void coupJouer(char[][] tab, int joueur){
 		char signe = 'X';
 		if(joueur == 1){
@@ -243,7 +262,12 @@ class Reversi{
 		displayTab(tab);
 	}
 	
-	
+
+	/**
+	 * Recherche le meilleur coup jouable par le robot et fait ce coup et modifie les pionts si nécessaire
+	 * @param tab tableau de char à double entré représentant le plateau de jeu
+	 * @param joueur est le numéro du joueur qui joue
+	 */
 	void coupRobot(char[][]t, int joueur){
 		char signe = 'O';
 		if(joueur == 2){
@@ -260,7 +284,13 @@ class Reversi{
 	}
 		
 		
-	
+	/**
+	 * Vérifie si l'on peut jouer sur la case sélectioner
+	 * @param tab tableau de char à double entré représentant le plateau de jeu
+	 * @param x coordonnée de la colone
+	 * @param y coordonnée de la ligne
+	 * @return Retourne si le coup est jouable
+	 */
 	boolean estJouable(int x, int y, char[][] tab){
 		boolean jouable = false;
 		if(y>=0 && y<tab.length && x>=0 && x<tab.length && tab[y][x] == ' '){
@@ -276,7 +306,12 @@ class Reversi{
 		return jouable;
 	}
 	
-	
+
+	/**
+	 * Fait la liste de tous les coups jouables
+	 * @param tab tableau de char à double entré représentant le plateau de jeu
+	 * @return Retourne la liste des coups jouables
+	 */
 	int[][] listeCoupJouable(char[][]t){
         int cpt=0;
         int cptTab=0;
@@ -301,7 +336,13 @@ class Reversi{
     }
 	
 	
-	
+	/**
+	 * Fait la liste de toutes les cases non vides autour de la case choisi
+	 * @param tab tableau de char à double entré représentant le plateau de jeu
+	 * @param x coordonnée de la colone
+	 * @param y coordonnée de la ligne
+	 * @return Retourne la liste des voisins présents autour de la case
+	 */
 	int[][] listeVoisin(int x, int y, char[][] tab){
 		int[][] voisin = new int[4][2];
 		if(x-1 >= 0 && tab[y][x-1] != ' '){
@@ -914,6 +955,7 @@ class Reversi{
 		
 	}			
 }
+
 
 
 
