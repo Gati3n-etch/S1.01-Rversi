@@ -87,7 +87,7 @@ class Reversi{
 	/**
 	* Vérifie si la partie est terminée 
 	* Et renvoie true si la partie est terminée ( plateau plein ou plus de pions d'une couleur ) sinon false
-	* @param tab tableau de char à double entré représentant le plateau de jeu
+	* @param tab tableau de char à double entrée représentant le plateau de jeu
 	* @return retourne si la partie est terminée
 	*/
 	boolean estTerminer(char[][] tab){
@@ -115,7 +115,7 @@ class Reversi{
 	
 	/**
 	 * Recherche si un pions(signe) est présent sur le plateau(tableau)
-	 * @param tab tableau de char à double entré représentant le plateau de jeu
+	 * @param tab tableau de char à double entrée représentant le plateau de jeu
 	 * @param signe X ou O qui représentent la couleur des pions
 	 * @return vrai si le pions est présent sur le plateau sinon faux
 	 */
@@ -134,7 +134,7 @@ class Reversi{
 
 	/**
 	 * Recherche quel joueur est gagnant ou si il y a une égalité
-	 * @param tab tableau de char à double entré représentant le plateau de jeu
+	 * @param tab tableau de char à double entrée représentant le plateau de jeu
 	 * @return Retourne le gegnant sous forme d'un nombre : 1 (blanc), 2 (noir) et 0 (égalité)
 	 */
 	int resultat(char[][]tab){
@@ -285,8 +285,8 @@ class Reversi{
 		
 		
 	/**
-	 * Vérifie si l'on peut jouer sur la case sélectioner
-	 * @param tab tableau de char à double entré représentant le plateau de jeu
+	 * Vérifie si l'on peut jouer sur la case sélectionée
+	 * @param tab tableau de char à double entrée représentant le plateau de jeu
 	 * @param x coordonnée de la colone
 	 * @param y coordonnée de la ligne
 	 * @return Retourne si le coup est jouable
@@ -309,7 +309,7 @@ class Reversi{
 
 	/**
 	 * Fait la liste de tous les coups jouables
-	 * @param tab tableau de char à double entré représentant le plateau de jeu
+	 * @param tab tableau de char à double entrée représentant le plateau de jeu
 	 * @return Retourne la liste des coups jouables
 	 */
 	int[][] listeCoupJouable(char[][]t){
@@ -338,7 +338,7 @@ class Reversi{
 	
 	/**
 	 * Fait la liste de toutes les cases non vides autour de la case choisi
-	 * @param tab tableau de char à double entré représentant le plateau de jeu
+	 * @param tab tableau de char à double entrée représentant le plateau de jeu
 	 * @param x coordonnée de la colone
 	 * @param y coordonnée de la ligne
 	 * @return Retourne la liste des voisins présents autour de la case
@@ -955,6 +955,7 @@ class Reversi{
 		
 	}			
 }
+
 
 
 
